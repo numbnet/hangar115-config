@@ -4,11 +4,11 @@ if [[ "$EUID" -ne 0 ]]; then
 fi
 
 clear
-echo ""
-read -p "Please enter a root MySQL and server password: " MYSQL_PASS;
-while [[ -z "$MYSQL_PASS" ]]; do
-    read -p "Please enter a root MySQL and server password: " MYSQL_PASS;
-done
+#echo ""
+#read -p "Please enter a root MySQL and server password: " MYSQL_PASS;
+#while [[ -z "$MYSQL_PASS" ]]; do
+#    read -p "Please enter a root MySQL and server password: " MYSQL_PASS;
+#done
 
 echo ""
 echo ""
