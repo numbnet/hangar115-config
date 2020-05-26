@@ -163,7 +163,7 @@ sudo ukuu --install-latest
 sudo apt-get -y install ps-watcher
 
 # Install Python
-sudo apt-get -y install python
+sudo apt-get -y install python3
 cd /var
 mkdir pip
 cd pip
