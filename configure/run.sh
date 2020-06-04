@@ -27,19 +27,35 @@ echo 'LC_ALL="en_US.UTF-8"' >> /etc/environment
 sudo add-apt-repository -y ppa:ondrej/php # PHP 7.4
 sudo add-apt-repository -y ppa:certbot/certbot # Let's Encrypt Certbot
 sudo add-apt-repository -y ppa:teejee2008/ppa # Ukuu
+
+wget -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx"
 #sudo add-apt-repository -y ppa:jonathonf/ffmpeg-4 # FFMPEG 4
 
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 # MariaDB 10.4
 sudo add-apt-repository "deb [arch=amd64] http://mariadb.mirror.liquidtelecom.com/repo/10.4/ubuntu $(lsb_release -cs) main" # MariaDB 10.4
 
 # GoAccess
-echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
 wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key add -
+echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
 
 # Essentials
 sudo apt-get -y update
 sudo apt-get -y dist-upgrade
 sudo apt-get -y install mc htop curl zip unzip build-essential tcl git fail2ban software-properties-common build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev goaccess
+
+# Install Python
+sudo apt-get -y install python3
+cd /var
+mkdir pip
+cd pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
+echo ""
+
+# Install Let's Encypt and its Certbot
+sudo apt-get -y install nginx certbot python3-certbot-nginx
+#pip install certbot-nginx
 
 # Install MariaDB
 sudo apt-get -y install mariadb-server
@@ -86,9 +102,6 @@ echo ""
 
 # Certbot Configure Auto Renewal
 sudo certbot renew --dry-run
-
-# Restart NGINX
-#sudo service nginx restart
 
 # Restart PHP 7.4-FPM
 sudo service php7.4-fpm restart
@@ -162,18 +175,6 @@ sudo ukuu --install-latest
 # Install PS-Watcher
 sudo apt-get -y install ps-watcher
 
-# Install Python
-sudo apt-get -y install python3
-cd /var
-mkdir pip
-cd pip
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python get-pip.py
-
-# Install Let's Encypt and its Certbot
-sudo apt-get -y install certbot python3-certbot-nginx
-#pip install certbot-nginx
-
 # Install latest YouTube-DL
 #sudo apt-get -y install youtube-dl
 #sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/bin/youtube-dl
@@ -204,6 +205,8 @@ mkdir proxy
 # Create NGINX site cache directories
 mkdir pagespeed-cache
 chown -R www-data:www-data /var/nginx-cache
+
+sudo ukuu --install-latest
 
 echo "Please run mysql_secure_installation and then reboot the server."
 exit
