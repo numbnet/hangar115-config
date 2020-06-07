@@ -219,7 +219,7 @@ chown -R www-data:www-data /var/nginx-cache
 
 sudo ukuu --install-latest
 
-echo "Please run mysql_secure_installation and then reboot the server."
+echo "Please run 'mysql_secure_installation' and then 'reboot' the server."
 exit
 
 #reboot
