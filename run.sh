@@ -24,7 +24,7 @@ sudo timedatectl set-timezone America/New_York # Africa/Cairo
 echo 'LC_ALL="en_US.UTF-8"' >> /etc/environment
 
 # Add required repositories
-sudo add-apt-repository -y ppa:ondrej/php # PHP 7.4
+sudo add-apt-repository -y ppa:ondrej/php # PHP 8.0
 sudo add-apt-repository -y ppa:certbot/certbot # Let's Encrypt Certbot
 sudo add-apt-repository -y ppa:teejee2008/ppa # Ukuu
 
@@ -39,10 +39,13 @@ sudo add-apt-repository "deb [arch=amd64] http://mariadb.mirror.liquidtelecom.co
 wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key add -
 echo "deb http://deb.goaccess.io/ $(lsb_release -cs) main" | sudo tee -a /etc/apt/sources.list.d/goaccess.list
 
+# Node 14 LTS
+curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+
 # Essentials
 sudo apt-get -y update
 sudo apt-get -y dist-upgrade
-sudo apt-get -y install mc htop curl zip unzip build-essential tcl git fail2ban software-properties-common build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev goaccess
+sudo apt-get -y install nodejs mc htop curl zip unzip build-essential tcl git fail2ban software-properties-common build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev goaccess gcc g++ make
 
 # Install Python
 sudo apt-get -y install python3
@@ -64,6 +67,9 @@ sudo service mysql stop
 
 # Install PHP 7.4-FPM
 sudo apt-get -y install php7.4 php7.4-fpm php7.4-curl php7.4-gd php7.4-json php7.4-mysql php7.4-sqlite3 php7.4-pgsql php7.4-bz2 php7.4-mbstring php7.4-soap php7.4-xml php7.4-zip php7.4-dev php7.4-imap php7.4-tidy php7.4-gmp php7.4-bcmath
+
+# Install PHP 8.0-FPM
+sudo apt-get -y install php8.0 phpp8.0-fpm phpp8.0-curl php8.0-gd php8.0-json php8.0-mysql php8.0-sqlite3 php8.0-pgsql php8.0-bz2 php8.0-mbstring php8.0-soap php8.0-xml php8.0-zip php8.0-dev php8.0-imap php8.0-tidy php8.0-gmp php8.0-bcmath
 
 # Install Redis and PHP-Redis
 #sudo apt-get -y install redis-server php-redis
@@ -103,8 +109,8 @@ echo ""
 # Certbot Configure Auto Renewal
 sudo certbot renew --dry-run
 
-# Restart PHP 7.4-FPM
-sudo service php7.4-fpm restart
+# Restart PHP 8.0-FPM
+sudo service php8.0-fpm restart
 
 # MySQL Secure Installation
 sudo mysql_secure_installation
@@ -149,7 +155,7 @@ sudo chmod +x nginx/nginx-autoinstall.sh
 sudo bash nginx/nginx-autoinstall.sh #Stable option recommended
 
 # Kerel Security
-# + Configure PHP 7.4, PS-Watcher, Redis and MySQL (MariaDB)
+# + Configure PHP 8.0, PS-Watcher, Redis and MySQL (MariaDB)
 yes | cp -rf configs/* /etc/
 
 # Refresh sysctl.conf
@@ -160,7 +166,7 @@ yes | cp -rf nginx_config/* /etc/
 
 # Restart services
 #sudo /etc/init.d/redis-server restart
-sudo service php7.4-fpm restart
+sudo service php8.0-fpm restart
 sudo service mysql restart
 sudo service nginx restart
 
