@@ -69,7 +69,7 @@ sudo service mysql stop
 sudo apt-get -y install php7.4 php7.4-fpm php7.4-curl php7.4-gd php7.4-json php7.4-mysql php7.4-sqlite3 php7.4-pgsql php7.4-bz2 php7.4-mbstring php7.4-soap php7.4-xml php7.4-zip php7.4-dev php7.4-imap php7.4-tidy php7.4-gmp php7.4-bcmath
 
 # Install PHP 8.0-FPM
-sudo apt-get -y install php8.0 phpp8.0-fpm phpp8.0-curl php8.0-gd php8.0-json php8.0-mysql php8.0-sqlite3 php8.0-pgsql php8.0-bz2 php8.0-mbstring php8.0-soap php8.0-xml php8.0-zip php8.0-dev php8.0-imap php8.0-tidy php8.0-gmp php8.0-bcmath
+sudo apt-get -y install php8.0 php8.0-fpm php8.0-curl php8.0-gd php8.0-mysql php8.0-sqlite3 php8.0-pgsql php8.0-bz2 php8.0-mbstring php8.0-soap php8.0-xml php8.0-zip php8.0-dev php8.0-imap php8.0-tidy php8.0-gmp php8.0-bcmath
 
 # Install Redis and PHP-Redis
 #sudo apt-get -y install redis-server php-redis
