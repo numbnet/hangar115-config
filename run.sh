@@ -32,7 +32,7 @@ wget -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx"
 #sudo add-apt-repository -y ppa:jonathonf/ffmpeg-4 # FFMPEG 4
 
-sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8 # MariaDB 10.5
+sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' # MariaDB 10.5
 sudo add-apt-repository "deb [arch=amd64] http://mariadb.mirror.liquidtelecom.com/repo/10.5/ubuntu $(lsb_release -cs) main" # MariaDB 10.5
 
 # GoAccess
