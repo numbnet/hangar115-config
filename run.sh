@@ -26,7 +26,6 @@ echo 'LC_ALL="en_US.UTF-8"' >> /etc/environment
 # Add required repositories
 sudo add-apt-repository -y ppa:ondrej/php # PHP 8.0
 sudo add-apt-repository -y ppa:certbot/certbot # Let's Encrypt Certbot
-sudo add-apt-repository -y ppa:teejee2008/ppa # Ukuu
 
 wget -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx"
