@@ -31,8 +31,8 @@ wget -O - http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] http://nginx.org/packages/mainline/ubuntu/ $(lsb_release -cs) nginx"
 #sudo add-apt-repository -y ppa:jonathonf/ffmpeg-4 # FFMPEG 4
 
-sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' # MariaDB 10.5
-sudo add-apt-repository "deb [arch=amd64] http://mariadb.mirror.liquidtelecom.com/repo/10.5/ubuntu $(lsb_release -cs) main" # MariaDB 10.5
+sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc' # MariaDB 10.6
+sudo add-apt-repository "deb [arch=amd64] http://mariadb.mirror.liquidtelecom.com/repo/10.6/ubuntu $(lsb_release -cs) main" # MariaDB 10.6
 
 # GoAccess
 wget -O - https://deb.goaccess.io/gnugpg.key | sudo apt-key add -
@@ -44,7 +44,7 @@ curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
 # Essentials
 sudo apt-get -y update
 sudo apt-get -y dist-upgrade
-sudo apt-get -y install nodejs mc htop curl zip unzip build-essential tcl git fail2ban software-properties-common build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev goaccess gcc g++ make
+sudo apt-get -y install nodejs mc htop curl zip unzip build-essential tcl git fail2ban software-properties-common build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev goaccess gcc g++ make p7zip-full
 
 # Install Python
 sudo apt-get -y install python3
@@ -68,7 +68,7 @@ sudo service mysql stop
 sudo apt-get -y install php7.4 php7.4-fpm php7.4-curl php7.4-gd php7.4-json php7.4-mysql php7.4-sqlite3 php7.4-pgsql php7.4-bz2 php7.4-mbstring php7.4-soap php7.4-xml php7.4-zip php7.4-dev php7.4-imap php7.4-tidy php7.4-gmp php7.4-bcmath
 
 # Install PHP 8.0-FPM
-sudo apt-get -y install php8.0 php8.0-fpm php8.0-cli php8.0-opcache php8.0-readline php8.0-curl php8.0-gd php8.0-mysql php8.0-sqlite3 php8.0-pgsql php8.0-bz2 php8.0-mbstring php8.0-soap php8.0-xml php8.0-zip php8.0-dev php8.0-imap php8.0-tidy php8.0-gmp php8.0-bcmath
+#sudo apt-get -y install php8.0 php8.0-fpm php8.0-cli php8.0-opcache php8.0-readline php8.0-curl php8.0-gd php8.0-mysql php8.0-sqlite3 php8.0-pgsql php8.0-bz2 php8.0-mbstring php8.0-soap php8.0-xml php8.0-zip php8.0-dev php8.0-imap php8.0-tidy php8.0-gmp php8.0-bcmath
 
 # Install Redis and PHP-Redis
 #sudo apt-get -y install redis-server php-redis
@@ -78,38 +78,38 @@ sudo apt-get -y install php8.0 php8.0-fpm php8.0-cli php8.0-opcache php8.0-readl
 #echo "mysqldump -u root -p$MYSQL_PASS --all-databases | gzip > /var/mysqlbackups/linkyouonline_`date +%F`_`date +%H`_`date +%M`.sql.gz" >> /var/mysqlbackups/mysqlbackup.sh
 
 # Add Auto Backups scripts
-cp -rf backups/* /var/
+# cp -rf backups/* /var/
 
-# Make sure that the .sh-s can run.
-sudo chmod +x /var/hangar115-backups/mysql-backup.sh
-sudo chmod +x /var/hangar115-backups/www-backup.sh
-sudo chmod +x /var/hangar115-backups/config-backup.sh
+# # Make sure that the .sh-s can run.
+# sudo chmod +x /var/hangar115-backups/mysql-backup.sh
+# sudo chmod +x /var/hangar115-backups/www-backup.sh
+# sudo chmod +x /var/hangar115-backups/config-backup.sh
 
-sudo crontab -l > mysql_backup
-echo "0 */4 * * * /var/hangar115-backups/mysql-backup.sh" >> mysql_backup
-sudo crontab mysql_backup
-sudo rm mysql_backup
+# sudo crontab -l > mysql_backup
+# echo "0 */4 * * * /var/hangar115-backups/mysql-backup.sh" >> mysql_backup
+# sudo crontab mysql_backup
+# sudo rm mysql_backup
 
-sudo crontab -l > www_backup
-echo "2 */6 * * * /var/hangar115-backups/www-backup.sh" >> www_backup
-sudo crontab www_backup
-sudo rm www_backup
+# sudo crontab -l > www_backup
+# echo "2 */6 * * * /var/hangar115-backups/www-backup.sh" >> www_backup
+# sudo crontab www_backup
+# sudo rm www_backup
 
-sudo crontab -l > config_backup
-echo "4 */6 * * * /var/hangar115-backups/config-backup.sh" >> config_backup
-sudo crontab config_backup
-sudo rm config_backup
+# sudo crontab -l > config_backup
+# echo "4 */6 * * * /var/hangar115-backups/config-backup.sh" >> config_backup
+# sudo crontab config_backup
+# sudo rm config_backup
 
-echo ""
-echo "Backups set."
-echo ""
+# echo ""
+# echo "Backups set."
+# echo ""
 # Cron jobs end.
 
 # Certbot Configure Auto Renewal
 sudo certbot renew --dry-run
 
 # Restart PHP 8.0-FPM
-sudo service php8.0-fpm restart
+sudo service php7.4fpm restart
 
 # MySQL Secure Installation
 sudo mysql_secure_installation
@@ -126,12 +126,15 @@ sudo service mysql restart
 #sudo mysql -u root -p"$MYSQL_PASS" -e "FLUSH PRIVILEGES"
 
 # Raise Filelimit to Sky-High
-sudo sh -c "ulimit -n 777777777777777 && exec su $LOGNAME"
-sudo touch /etc/sysctl.conf
-echo "fs.file-max = 777777777777777" >> /etc/sysctl.conf
+# sudo sh -c "ulimit -n 777777777777777 && exec su $LOGNAME"
+# sudo touch /etc/sysctl.conf
+# echo "fs.file-max = 777777777777777" >> /etc/sysctl.conf
 
 # Remove Telnet
 sudo apt-get -y remove telnet
+
+# Install Netdata
+bash <(curl -Ss https://my-netdata.io/kickstart.sh)
 
 # IP Tables #disabled for now - see UFW
 #sudo iptables-restore < copy/iptables_secure.conf
@@ -140,6 +143,7 @@ sudo apt-get -y remove telnet
 sudo ufw allow ssh
 sudo ufw allow http
 sudo ufw allow https
+# sudo ufw allow 19999/tcp # Netdata
 #sudo ufw deny out 25 #Deny SMTP
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -155,17 +159,17 @@ sudo bash nginx/nginx-autoinstall.sh #Stable option recommended
 
 # Kerel Security
 # + Configure PHP 8.0, PS-Watcher, Redis and MySQL (MariaDB)
-yes | cp -rf configs/* /etc/
+# yes | cp -rf configs/* /etc/
 
 # Refresh sysctl.conf
 sudo sysctl -p
 
 # Configure NGINX
-yes | cp -rf nginx_config/* /etc/
+# yes | cp -rf nginx_config/* /etc/
 
 # Restart services
 #sudo /etc/init.d/redis-server restart
-sudo service php8.0-fpm restart
+sudo service php7.4-fpm restart
 sudo service mysql restart
 sudo service nginx restart
 
@@ -174,8 +178,8 @@ sudo apt-get -y install mysqltuner
 
 # Install Ukuu
 # + build new kernel
-sudo apt-get -y install ukuu
-sudo ukuu --install-latest
+# sudo apt-get -y install ukuu
+# sudo ukuu --install-latest
 
 # Install PS-Watcher
 sudo apt-get -y install ps-watcher
@@ -211,7 +215,7 @@ mkdir proxy
 mkdir pagespeed-cache
 chown -R www-data:www-data /var/nginx-cache
 
-sudo ukuu --install-latest
+# sudo ukuu --install-latest
 
 echo "Please run mysql_secure_installation and then reboot the server."
 exit
